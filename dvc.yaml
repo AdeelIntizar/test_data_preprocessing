@@ -1,0 +1,11 @@
+stages:
+  preprocess:
+    cmd: python src/data_preparation.py raw_data
+    deps:
+    - raw_data
+    - src/data_preparation.py
+    outs:
+    - data/train/images
+    - data/train/labels
+    - data/val/images
+    - data/val/labels
