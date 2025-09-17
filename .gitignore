@@ -1,0 +1,10 @@
+./data
+./mlruns    
+./__pycache__
+./model_results
+./runs
+./trained_models
+./tray_bowl
+data.zip
+yolov8t.pt
+yolov8n.pt
