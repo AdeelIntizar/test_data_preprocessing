@@ -1,0 +1,74 @@
+# name: DVC Pipeline CI
+
+# on:
+#   push:
+#     branches:
+#       - main
+#     paths:
+#       - "raw_data.dvc"
+#       - "dvc.yaml"
+#       - "dvc.lock"
+#       - "src/**"
+#       - ".github/workflows/dvc_pipeline.yml"
+
+# jobs:
+#   dvc-pipeline:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repo
+#         uses: actions/checkout@v3
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.11"
+
+#       - name: Install dependencies
+#         run: |
+#           pip install --upgrade pip
+#           pip install dvc[s3]  # or dvc[gdrive]/dvc[azure]/dvc[gs] depending on remote
+#           pip install ultralytics mlflow opencv-python-headless
+
+#       - name: Configure DVC remote
+#         run: |
+#           dvc remote modify myremote --local access_key_id ${{ secrets.AWS_ACCESS_KEY_ID }}
+#           dvc remote modify myremote --local secret_access_key ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+#           dvc remote list
+
+#       - name: Pull latest data
+#         run: |
+#           dvc pull
+
+#       - name: Run DVC pipeline
+#         run: |
+#           dvc repro
+
+#       - name: Push new outputs to DVC remote
+#         run: |
+#           dvc push
+
+
+
+name: DVC Change Detector
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "raw_data.dvc"
+      - "dvc.yaml"
+      - "dvc.lock"
+      - "src/**"
+
+jobs:
+  detect-dvc-change:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Detect change
+        run: |
+          echo "DVC-related files changed. Please run 'dvc repro' locally to update pipeline."
